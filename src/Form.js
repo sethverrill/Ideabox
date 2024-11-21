@@ -12,6 +12,7 @@ function Form({ addIdea }){
       title,
       description
     }
+   
     addIdea(newIdea)
     clearInput()
   }
@@ -21,7 +22,7 @@ function Form({ addIdea }){
   }
 
     return(
-      <form>
+      <form onSubmit={submitIdeas}>
         <input
           type='text'
           placeholder='Title'
@@ -38,7 +39,7 @@ function Form({ addIdea }){
           onChange={event => setDescription(event.target.value)}
         />
 
-        <button onClick={ event => submitIdeas(event)}>SUBMIT</button>
+        <button type='submit'>SUBMIT</button>
       </form>
     )
 }

@@ -1,14 +1,51 @@
 import './App.css';
 import Form from './Form';
 import Ideas from './Ideas';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [ideas, setIdeas] = useState([]);
 
-  function addIdea(newIdea) {
-    setIdeas([...ideas, newIdea])
+  async function fetchIdeas() {
+    const url = "http://localhost:3001/api/v1/ideas"
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      const ideaData = await response.json();
+      setIdeas(ideaData);
+    } catch (error) {
+      console.error(error.message);
+    }
   }
+
+  useEffect(() => {
+    fetchIdeas();
+  }, []);
+
+  async function addIdea(newIdea) {
+    const url = "http://localhost:3001/api/v1/ideas"
+    try { 
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newIdea)
+      });
+
+      if (!response.ok) {
+        throw new Error( `Response status: ${response.status}`);
+      }
+
+      const createdIdea = await response.json();
+      setIdeas((prevIdeas) => [...prevIdeas, createdIdea]);
+    } catch (error) {
+      console.error(error.message);
+    }    
+  }
+
   function deleteIdea(id){
     console.log(id);
     const filteredIdeas = ideas.filter(idea =>idea.id !== id)

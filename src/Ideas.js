@@ -5,10 +5,10 @@ function Ideas({ ideas, deleteIdea }){
   const ideaCards = ideas.map(idea => {
     return (
       <Card
+        key={idea.id}
         title={idea.title}
         description={idea.description}
         id={idea.id}
-        key={idea.key}
         deleteIdea={deleteIdea}
       />
     )
